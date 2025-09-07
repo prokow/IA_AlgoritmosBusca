@@ -7,19 +7,26 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+
+    //Descrição: O método principal que inicia o programa.
+    //Pré-condição: Nenhuma.
+    //Pós-condição: O programa é executado, interagindo com o usuário até que a opção de sair seja escolhida.
+    //Entrada: String[] args - Argumentos de linha de comando (não utilizados).
+    //Saída: Nenhuma.
     public static void main(String[] args) {
-        System.out.println("--- Projeto 2 - Algortimos de Busca ---");
-        System.out.println("--- Aluno: Matheus Prokopowiski ---");
+        System.out.println("-*-*-*-*-*-*-*-*-*- Projeto 2 - Algortimos de Busca -*-*-*-*-*-*-*-*-*-");
+        System.out.println("- Alunos: Anny Karoline Dellani & Matheus Prokopowiski dos Santos -");
 
         // --- Carrega o Grafo a ser usado ---
         Grafo grafo = null;
         ReadGrafo leitor = new ReadGrafo();
         Scanner scanner = new Scanner(System.in);
 
-        // --- Arquivo texto para o labirinto ---
+        // Pede ao usuário para fornecer o caminho do arquivo de teste.
         System.out.print("\nDigite o caminho do arquivo de teste para iniciar a execução (ex: teste.txt): ");
         String caminhoArquivo = scanner.next(); // Lê a string digitada pelo usuário
 
+        // Tenta ler e construir o grafo. Se falhar, encerra o programa com uma mensagem de erro.
         try {
             grafo = leitor.readArquivo(caminhoArquivo);
             System.out.println("... Grafo do labirinto carregado com sucesso!\n");
@@ -32,6 +39,7 @@ public class Main {
         }
         
         // --- Menu ---
+        // O laço while(true) mantém o menu ativo até que o usuário escolha sair.
         while (true) {
             System.out.println("==============================================");
             System.out.println("Escolha o algoritmo para Teseu usar:");
@@ -51,7 +59,7 @@ public class Main {
 
             System.out.println("==============================================");
 
-            // --- Algoritmo a ser escolhido ---
+            // O switch direciona o programa com base na escolha do usuário.
             switch (escolha) {
                 case 1:
                     buscaAEstrela aEstrela = new buscaAEstrela(grafo);
@@ -66,24 +74,9 @@ public class Main {
                     scanner.close();
                     return;
                 default:
-                    System.out.println("Opção inválida! Por favor, escolha uma das opções do menu.");
+                    System.out.println("Opção inválida! Escolha uma das opções do menu..");
                     break;
             }
         }
     }
-
-    /*public static void main(String[] args) {
-        ReadGrafo leitor = new ReadGrafo();
-        Grafo g = null;
-
-        String nomeArquivo = "src/teste.txt";
-        try{
-            g = leitor.readArquivo(nomeArquivo);
-            System.out.println("Grafo lido com sucesso!");
-            System.out.println(g);
-
-        } catch (IOException e) {
-            System.err.println("Erro ao ler arquivo: "+ e.getMessage());
-        }
-    }*/
 }

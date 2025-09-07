@@ -9,6 +9,12 @@ public class Grafo {
     private Vertice pontoFinal;
     private boolean orientado;
 
+
+    //Descrição: Construtor da classe Grafo.
+    //Pré-condição: Nenhuma.
+    //Pós-condição: Um novo objeto Grafo é criado, vazio e configurado como não-orientado por padrão.
+    //Entrada: Nenhuma.
+    //Saída: Nenhuma.
     public Grafo(){
         this.vertices = new HashMap<>();
         this.pontoInicial = null;
@@ -16,6 +22,12 @@ public class Grafo {
         this.orientado = false;
     }
 
+
+    //Adiciona um novo vértice ao grafo ou retorna um existente se já houver um com o mesmo nome.
+    //Pré-condição: 'nome' deve ser uma String válida e não nula.
+    //Pós-condição: O vértice com o nome especificado existe no grafo e é retornado.
+    //Entrada: String 'nome' - O identificador do vértice a ser adicionado/recuperado.
+    //Saída: O objeto 'Vertice' correspondente ao nome.
     public Vertice addVertice(String nome){
         if(this.vertices.containsKey(nome)){ //Verifica se o mapa vertices ja tem o nome
             return this.vertices.get(nome);  //se sim, pega o vertice existe no mapa e retorna
@@ -27,6 +39,14 @@ public class Grafo {
         }
     }
 
+
+
+    //Adiciona uma aresta (conexão) entre dois vértices com um custo definido.
+    //Lida com a criação da aresta de volta caso o grafo seja não-orientado.
+    //Pré-condição: 'origem' e 'destino' são Strings válidas, 'peso' é não negativo.
+    //Pós-condição: Uma ou duas conexões (ida e volta) são adicionadas entre os vértices correspondentes.
+    //Entrada: String origem, String destino, int peso.
+    //Saída: Nenhuma.
     public void addAresta(String origem, String destino, int peso){
         Vertice VerticeOrigem = addVertice(origem);
         Vertice VerticeDestino = addVertice(destino);
@@ -37,6 +57,7 @@ public class Grafo {
         }
     }
 
+    // Métodos Getters e Setters
     public Vertice getPontoInicial(){
         return pontoInicial;
     }
@@ -60,23 +81,5 @@ public class Grafo {
 
     public Vertice getVertice(String nome){
         return this.vertices.get(nome);
-    }
-
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append("---Grafo--- \n");
-        sb.append("Ponto inicial: ").append(pontoInicial).append("\n");
-        sb.append("Ponto final: ").append(pontoFinal).append("\n");
-        sb.append("Orientado: ").append(orientado).append("\n");
-        sb.append("-----------------\n");
-
-        for(Vertice v : vertices.values()){
-            sb.append("Vertice '").append(v.nome).append("' (h=").append(v.heuristica).append(") tem vizinhos:\n");
-            for(Map.Entry<Vertice, Integer> vizinho : v.vizinhos.entrySet()){
-                sb.append(" -> ").append(vizinho.getKey().nome).append(" (custo: ").append(vizinho.getValue()).append(")\n");
-            }
-        }
-        return sb.toString();
     }
 }

@@ -9,6 +9,12 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class ReadGrafo {
+
+    //Lê um arquivo linha por linha e coordena o processo de parsing.
+    //Pré-condição: 'nomeArq' é um caminho válido para um arquivo existente.
+    //Pós-condição: Retorna um objeto 'Grafo' populado com os dados do arquivo.
+    //Entrada: String 'nomeArq' - caminho do arquivo a ser lido.
+    //Saída: Um objeto Grafo.
     public Grafo readArquivo(String nomeArq) throws IOException {
         Grafo g = new Grafo();
         List<String> linhas = Files.readAllLines(Paths.get(nomeArq));
@@ -19,6 +25,12 @@ public class ReadGrafo {
         return g;
     }
 
+
+    //Processa uma única linha do arquivo, identifica seu tipo e atualiza o grafo.
+    //Pré-condição: 'g' é um objeto Grafo válido.
+    //Pós-condição: O objeto 'g' é modificado com a informação contida na 'linha'.
+    //Entrada: Linha de texto a ser processada pela 'linha', e o grafo 'g' a ser modificado.
+    //Saída: Nenhuma.
     private void processaLinha(String linha, Grafo g) {
         linha = linha.trim();
 
@@ -63,6 +75,12 @@ public class ReadGrafo {
         }
     }
 
+
+    //Função auxiliar que extrai o texto de dentro de parênteses.
+    //Pré-condição: A linha contém os caracteres '(' e ')'.
+    //Pós-condição: Retorna a substring entre os parênteses.
+    //Entrada: String 'linha' - A linha completa.
+    //Saída: A string extraída.
     private String extrairConteudo(String linha){
         int inicio = linha.indexOf('(');
         int fim = linha.lastIndexOf(')');
