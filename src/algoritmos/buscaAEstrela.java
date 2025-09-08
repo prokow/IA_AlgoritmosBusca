@@ -25,7 +25,7 @@ public class buscaAEstrela {
     //Entrada: Nenhuma.
     //Saída: Imprime os resultados no console.
     public void buscar() {
-        System.out.println("Início da execução da Busca A*");
+        System.out.println("==== Inicio da execução da Busca A* ====");
 
         // Inicializa a medida de desempenho.
         this.maxSizeFronteira = 0;
@@ -62,7 +62,7 @@ public class buscaAEstrela {
                 System.out.printf("(%s: %.0f + %.0f = %.0f) ", no.vertice.nome, no.g, no.h, no.f);
             }
 
-            System.out.println("\nTamanh atual da fronteira: " + fronteira.size());
+            System.out.println("\nTamanho atual da fronteira: " + fronteira.size());
             System.out.println("-----------------");
 
             // Pega o nó mais promissor (com o menor 'f') da fronteira para expandir.
@@ -129,8 +129,8 @@ public class buscaAEstrela {
         Collections.reverse(caminho);
 
         // Imprime o resumo final formatado.
-        System.out.println("\n--- Resumo da Execução (A*) ---");
-        System.out.println("Custo do caminho ótimo: " + noFinal.g);
+        System.out.println("\n--- Fim da Execução ---");
+        System.out.println("Distância: " + noFinal.g);
         System.out.print("Caminho: ");
         for (int i = 0; i < caminho.size(); i++) {
             System.out.print(caminho.get(i).nome + (i == caminho.size() - 1 ? "" : " -> "));

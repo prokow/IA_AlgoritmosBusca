@@ -8,7 +8,6 @@ public class Vertice {
     public Map<Vertice, Integer> vizinhos;  // Mapa que armazena os vértices vizinhos e o custo da aresta.
     public int heuristica;                  // Valor heurístico (custo estimado) deste vértice até o nó final.
 
-
     //Construtor da classe Vertice.
     //Pré-condição: 'nome' deve ser uma String válida e não nula.
     //Pós-condição: Um novo objeto Vertice é criado com o nome especificado e uma lista de vizinhos vazia.

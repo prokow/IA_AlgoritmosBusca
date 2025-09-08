@@ -37,7 +37,7 @@ public class Main {
             scanner.close(); // Fecha o scanner antes de sair
             System.exit(1);
         }
-        
+
         // --- Menu ---
         // O laço while(true) mantém o menu ativo até que o usuário escolha sair.
         while (true) {

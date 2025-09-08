@@ -13,11 +13,11 @@ public class buscaProfundidade {
     private int maxSizeFronteira;   //Medida de desempenho: tamanho maximo da fronteira
 
 
-     //Construtor da classe.
-     //Pré-condição: O objeto 'grafo' fornecido não pode ser nulo.
-     //Pós-condição: Uma nova instância de 'buscaProfundidade' é criada.
-     //Entrada: Grafo g - O grafo no qual a busca será realizada.
-     //Saída: Nenhuma.
+    //Construtor da classe.
+    //Pré-condição: O objeto 'grafo' fornecido não pode ser nulo.
+    //Pós-condição: Uma nova instância de 'buscaProfundidade' é criada.
+    //Entrada: Grafo g - O grafo no qual a busca será realizada.
+    //Saída: Nenhuma.
     public buscaProfundidade(Grafo g) {
         this.grafo = g;
     }
@@ -32,15 +32,14 @@ public class buscaProfundidade {
         this.nosVisitados = 1;
         this.maxSizeFronteira = 0;
 
-        // A 'fronteira' aqui é uma Pilha (Stack). Isso é o CORAÇÃO do DFS.
+        // A 'fronteira' aqui é uma Pilha (Stack).
         // A pilha segue a regra LIFO (Last-In, First-Out), ou seja, o último
         // nó adicionado será o primeiro a ser explorado. É isso que faz a busca "mergulhar".
         Stack<auxBusca> fronteira = new Stack<>();
 
-        // O conjunto 'visitados' é crucial para o DFS, para evitar que o algoritmo
-        // entre em loops infinitos caso o grafo tenha ciclos.
-
+        // O conjunto 'visitados' é usado para evitar que o algoritmo entre em loops infinitos caso o grafo tenha ciclos.
         Set<Vertice> visitados = new HashSet<>();
+
         // Pega o ponto de partida do grafo.
         Vertice verticeInicial = grafo.getPontoInicial();
 
@@ -55,18 +54,16 @@ public class buscaProfundidade {
 
         // O laço continua enquanto a pilha de caminhos a explorar não estiver vazia.
         while (!fronteira.isEmpty()) {
-            // --- Bloco de Impressão de cada iteração ---
             System.out.println("Iteração " + i + ":");
             System.out.print("Pilha: ");
             for (auxBusca no : fronteira) {
                 // A impressão foi ajustada para o formato do DFS, mostrando apenas a distância.
                 System.out.printf("(%s: dist = %.0f) ", no.vertice.nome, no.g);
             }
-            System.out.println("\nMedida de desempenho (Nós Gerados): " + this.nosVisitados);
-            System.out.println("Tamanho atual da Pilha: " + fronteira.size());
+            System.out.println("\nTamanho atual da fronteira: " + fronteira.size());
             System.out.println("-----------------");
 
-            // Pega o nó do TOPO da pilha (o mais recente). É aqui que a "profundidade" acontece.
+            // Pega o nó do TOPO da pilha (o mais recente).
             auxBusca noAtual = fronteira.pop();
             this.nosVisitados++;
 
@@ -74,6 +71,7 @@ public class buscaProfundidade {
             if (visitados.contains(noAtual.vertice)) {
                 continue;
             }
+
             // Marca o vértice como visitado.
             visitados.add(noAtual.vertice);
 
@@ -83,21 +81,28 @@ public class buscaProfundidade {
                 return;
             }
 
-            // Adiciona vizinhos na pilha (a ordem pode ser invertida para um DFS mais clássico)
-            // Para cada vizinho do nó atual...
-            for (Map.Entry<Vertice, Integer> vizinhoEntry : noAtual.vertice.vizinhos.entrySet()) {
+            //Converte os vizinhos para uma lista para ter uma ordem garantida.
+            List<Map.Entry<Vertice, Integer>> vizinhosOrdenados = new ArrayList<>(noAtual.vertice.vizinhos.entrySet());
+
+            // Ordena a lista  para garantir que seja sempre a mesma ordem.
+            vizinhosOrdenados.sort(Comparator.comparing(e -> e.getKey().nome));
+
+            //Inverte a lista, assim fazendo com que os nós sejam colocados na pilha de forma que
+            //o primeiro da lista original seja o último a ser empilhado e, o primeiro a ser explorado.
+            Collections.reverse(vizinhosOrdenados);
+
+            // Será feito a iteração sobre a lista com ordem controlada.
+            for (Map.Entry<Vertice, Integer> vizinhoEntry : vizinhosOrdenados) {
                 Vertice vizinho = vizinhoEntry.getKey();
-                // ...se o vizinho ainda não foi visitado...
-                if (!visitados.contains(vizinho)) {
-                    // ...calcula o custo para chegar até ele...
+
+                if (!visitados.contains(vizinho)) { //se o vizinho ainda não foi visitado
+
+                    //faz o calculo do custo para chegar até ele
                     double custoAteVizinho = noAtual.g + vizinhoEntry.getValue();
                     auxBusca noVizinho = new auxBusca(vizinho, noAtual, custoAteVizinho, vizinho.heuristica);
 
-                    // ...e o COLOCA NO TOPO da pilha. Ele será o próximo a ser explorado.
+                    //e é colocado no topo da pilha, onde ele será o próximo a ser explorado.
                     fronteira.push(noVizinho);
-
-                    // Incrementa a contagem de nós gerados.
-                    this.nosVisitados++;
                 }
             }
 
@@ -119,22 +124,20 @@ public class buscaProfundidade {
         List<Vertice> caminho = new ArrayList<>();
         auxBusca noAtual = noFinal;
 
-        // O processo de reconstrução do caminho é idêntico ao do A*,
-        // pois ambos usam a referência 'noAnterior'.
+        // O processo de reconstrução do caminho é idêntico ao do A*, pois ambos usam a referência 'noAnterior'.
         while (noAtual != null) {
             caminho.add(noAtual.vertice);
             noAtual = noAtual.noAnterior;
         }
         Collections.reverse(caminho);
 
-        System.out.println("\n--- Resumo da Execução (DFS) ---");
-        System.out.println("Custo do caminho encontrado: " + noFinal.g);
+        System.out.println("\n--- Fim da Execução ---");
+        System.out.println("Distância: " + noFinal.g);
         System.out.print("Caminho: ");
         for (int i = 0; i < caminho.size(); i++) {
             System.out.print(caminho.get(i).nome + (i == caminho.size() - 1 ? "" : " -> "));
         }
-        System.out.println("\nNós Visitados: " + this.nosVisitados);
-        System.out.println("Medida de desempenho (Tamanho Máximo da Fronteira): " + this.maxSizeFronteira);
+        //System.out.println("\nNós Visitados: " + this.nosVisitados);
+        System.out.println("\nMedida de desempenho (Tamanho Máximo da Fronteira): " + this.maxSizeFronteira);
     }
 }
-
